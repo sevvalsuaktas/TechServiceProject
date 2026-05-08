@@ -24,7 +24,23 @@
             <label class="form-label">Cihazın Durum Fotoğrafı</label>
             <input type="file" name="imageFile" class="form-control" accept="image/*" />
         </div>
-
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="mb-3">
+                <label class="form-label">Atanacak Personel</label>
+                <select asp-for="AssignedUserId" class="form-select">
+                    <option value="">-- Personel Seçiniz (İsteğe Bağlı) --</option>
+                    @if (ViewBag.Employees != null)
+                    {
+                        foreach (var emp in ViewBag.Employees)
+                        {
+                            <option value="@emp.Id">@emp.Username</option>
+                        }
+                    }
+                </select>
+            </div>
+        }
+        <button type="submit" class="btn btn-success">Kaydet</button>
         <button type="submit" class="btn btn-success">Kaydet</button>
         <a href="/Incident/Index" class="btn btn-secondary">İptal</a>
     </form>

@@ -1,0 +1,58 @@
+﻿@model TechService.Models.Entities.DeviceIncident
+
+<div class="container mt-4">
+    <h2>Kaydı Güncelle</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Müşteri Adı</label>
+            <input type="text" asp-for="CustomerName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Cihaz Modeli</label>
+            <input type="text" asp-for="DeviceModel" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Arıza Açıklaması</label>
+            <textarea asp-for="IssueDescription" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mevcut Resim</label> <br />
+            @if (Model.DeviceImage != null)
+            {
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.DeviceImage)" style="width:150px; border:1px solid #ddd; padding:5px;" />
+            }
+            else
+            {
+                <span class="text-muted">Resim yok</span>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Resmi Değiştir (İsteğe Bağlı)</label>
+            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="mb-3">
+                <label class="form-label">Atanan Personel</label>
+                <select asp-for="AssignedUserId" class="form-select">
+                    <option value="">-- Personel Seçiniz --</option>
+                    @foreach (var emp in ViewBag.Employees)
+                    {
+                        <option value="@emp.Id">@emp.Username</option>
+                    }
+                </select>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+        <a href="/Incident/Index" class="btn btn-secondary">Vazgeç</a>
+    </form>
+</div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechService.DataAccess;
 
@@ -11,9 +12,11 @@ using TechService.DataAccess;
 namespace TechService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260508124617_AddAdminTable")]
+    partial class AddAdminTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace TechService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TechService.Models.Entities.AppUser", b =>
+            modelBuilder.Entity("TechService.Models.Entities.Admin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,17 +37,13 @@ namespace TechService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("TechService.Models.Entities.DeviceIncident", b =>
@@ -54,9 +53,6 @@ namespace TechService.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AssignedUserId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -78,18 +74,7 @@ namespace TechService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedUserId");
-
                     b.ToTable("DeviceIncidents");
-                });
-
-            modelBuilder.Entity("TechService.Models.Entities.DeviceIncident", b =>
-                {
-                    b.HasOne("TechService.Models.Entities.AppUser", "AssignedUser")
-                        .WithMany()
-                        .HasForeignKey("AssignedUserId");
-
-                    b.Navigation("AssignedUser");
                 });
 #pragma warning restore 612, 618
         }

@@ -35,5 +35,48 @@ namespace TechService.Services
             // Kayıtları en yeniden en eskiye doğru sıralayarak getiriyoruz
             return _context.DeviceIncidents.OrderByDescending(x => x.CreatedDate).ToList();
         }
+
+        public void DeleteIncident(int id)
+        {
+            var incident = _context.DeviceIncidents.Find(id);
+            if (incident != null)
+            {
+                _context.DeviceIncidents.Remove(incident);
+                _context.SaveChanges();
+            }
+        }
+
+        public DeviceIncident GetIncidentById(int id)
+        {
+            return _context.DeviceIncidents.Find(id);
+        }
+
+        public void UpdateIncident(DeviceIncident incident, IFormFile? imageFile)
+        {
+            // Veritabanındaki eski kaydı buluyoruz
+            var existingValue = _context.DeviceIncidents.Find(incident.Id);
+
+            if (existingValue != null)
+            {
+                // Temel bilgileri güncelliyoruz
+                existingValue.CustomerName = incident.CustomerName;
+                existingValue.DeviceModel = incident.DeviceModel;
+                existingValue.IssueDescription = incident.IssueDescription;
+                existingValue.AssignedUserId = incident.AssignedUserId;
+
+                // EĞER YENİ BİR RESİM YÜKLENDİYSE GÜNCELLE
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        imageFile.CopyTo(memoryStream);
+                        existingValue.DeviceImage = memoryStream.ToArray();
+                    }
+                }
+                // Resim yüklenmediyse eski resim veritabanında korunur
+
+                _context.SaveChanges();
+            }
+        }
     }
 }

@@ -1,7 +1,14 @@
 ﻿@model List<TechService.Models.Entities.DeviceIncident>
 
 <div class="container mt-4">
-    <h2>Arıza Kayıtları</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Arıza Kayıtları</h2>
+
+        <div>
+            <span class="me-3 fw-bold">Hoş Geldin, @User.Identity.Name!</span>
+            <a href="/Login/Logout" class="btn btn-outline-danger btn-sm">Çıkış Yap</a>
+        </div>
+    </div>
 
     <form method="get" asp-action="Index" class="mb-4">
         <div class="input-group">
@@ -12,14 +19,15 @@
 
     <a href="/Incident/Create" class="btn btn-primary mb-3">Yeni Kayıt Ekle</a>
 
-    <table class="table table-bordered table-striped">
-        <thead>
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Tarih</th>
                 <th>Müşteri</th>
                 <th>Cihaz</th>
                 <th>Arıza Durumu</th>
                 <th>Cihaz Fotoğrafı</th>
+                <th>İşlemler</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +46,14 @@
                         else
                         {
                             <span class="text-muted">Görsel Yok</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Incident/Edit/@item.Id" class="btn btn-sm btn-warning mb-1">Güncelle</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="/Incident/Delete/@item.Id" class="btn btn-sm btn-danger mb-1">Sil</a>
                         }
                     </td>
                 </tr>

@@ -8,6 +8,6 @@ namespace TechService.DataAccess
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<DeviceIncident> DeviceIncidents { get; set; }
-        // İleride buraya Login için User tablosunu da ekleyeceğiz
+        public DbSet<AppUser> Users { get; set; }
     }
 }
