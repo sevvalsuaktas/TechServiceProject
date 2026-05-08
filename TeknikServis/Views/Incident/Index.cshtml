@@ -1,0 +1,47 @@
+﻿@model List<TechService.Models.Entities.DeviceIncident>
+
+<div class="container mt-4">
+    <h2>Arıza Kayıtları</h2>
+
+    <form method="get" asp-action="Index" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="searchString" class="form-control" placeholder="Müşteri Adı veya Cihaz Modeli Ara..." />
+            <button type="submit" class="btn btn-outline-secondary">Ara</button>
+        </div>
+    </form>
+
+    <a href="/Incident/Create" class="btn btn-primary mb-3">Yeni Kayıt Ekle</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Müşteri</th>
+                <th>Cihaz</th>
+                <th>Arıza Durumu</th>
+                <th>Cihaz Fotoğrafı</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.DeviceModel</td>
+                    <td>@item.IssueDescription</td>
+                    <td>
+                        @if (item.DeviceImage != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.DeviceImage)" style="width:100px; border-radius:5px;" alt="Cihaz Resmi" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">Görsel Yok</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,31 @@
+﻿@model TechService.Models.Entities.DeviceIncident
+
+<div class="container mt-4">
+    <h2>Yeni Arıza Kaydı Oluştur</h2>
+
+    <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Incident">
+
+        <div class="mb-3">
+            <label class="form-label">Müşteri Adı</label>
+            <input type="text" asp-for="CustomerName" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Cihaz Modeli (Örn: iPhone 13)</label>
+            <input type="text" asp-for="DeviceModel" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Arıza Açıklaması</label>
+            <textarea asp-for="IssueDescription" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Cihazın Durum Fotoğrafı</label>
+            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a href="/Incident/Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>
