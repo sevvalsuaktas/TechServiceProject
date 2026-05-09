@@ -34,14 +34,25 @@ namespace TechService.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, dataValue.Username),
-                    new Claim(ClaimTypes.Role, dataValue.Role), // Kullanıcının Rolü
-                    new Claim(ClaimTypes.NameIdentifier, dataValue.Id.ToString()) // Kullanıcının ID'si
+                    new Claim(ClaimTypes.Role, dataValue.Role),
+                    new Claim(ClaimTypes.NameIdentifier, dataValue.Id.ToString())
                 };
 
                 var useridentity = new ClaimsIdentity(claims, "Login");
                 ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
 
-                await HttpContext.SignInAsync(principal);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = false, // Tarayıcı kapandığı an hesaptan çıkış yapılsın
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2) // Açık kalsa bile 2 saat sonra otomatik atsın
+                };
+
+                // Giriş yaparken bu ayarları da sisteme gönderiyoruz
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal,
+                    authProperties);
+
                 return RedirectToAction("Index", "Incident");
             }
 

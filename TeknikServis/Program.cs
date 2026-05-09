@@ -19,9 +19,11 @@ builder.Services.AddScoped<IIncidentService, IncidentManager>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Login/Index"; // Giriþ yapmayanlarý buraya yönlendir
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // 10 dakika iþlem yapýlmazsa at
-        options.SlidingExpiration = true;
+        options.LoginPath = "/Login/Index";
+
+        // Proje her baþladýðýnda çerezin adýný rastgele deðiþtiriyoruz.
+        // Böylece eski açýk kalan oturumlarýn hepsi anýnda çöp oluyor.
+        options.Cookie.Name = "TechServiceAuth_" + Guid.NewGuid().ToString();
     });
 
 var app = builder.Build();
