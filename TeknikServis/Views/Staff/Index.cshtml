@@ -1,0 +1,91 @@
+﻿@model List<TechService.Models.Entities.AppUser>
+@{
+    // Controller'dan gönderdiğimiz cihaz listesini yakalıyoruz
+    var allIncidents = ViewBag.AllIncidents as List<TechService.Models.Entities.DeviceIncident>;
+}
+
+<div class="container-fluid px-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark m-0"><i class="bi bi-people"></i> Personel Yönetimi</h2>
+        <a href="/Incident/Index" class="btn btn-outline-secondary">Ana Sayfaya Dön</a>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <!-- Tablomuz Accordion (Açılır-Kapanır) yapısında olacak -->
+                <table class="table table-hover align-middle" id="personnelTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Kullanıcı Adı</th>
+                            <th>Şifre</th>
+                            <th>Rol</th>
+                            <th>Üzerindeki Aktif İşler</th>
+                            <th class="text-center">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            // Bu personele atanmış cihazları filtreliyoruz
+                            var userTasks = allIncidents?.Where(x => x.AssignedUser != null && x.AssignedUser.Id == user.Id).ToList() ?? new List<TechService.Models.Entities.DeviceIncident>();
+
+                            <tr>
+                                <td class="fw-semibold text-primary">@user.Username</td>
+                                <td><span class="badge bg-light text-dark border">@user.Password</span></td>
+                                <td>
+                                    @if (user.Role == "Admin")
+                                    {
+                                        <span class="badge bg-danger">Yönetici</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span class="badge bg-secondary">Personel</span>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-info fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#tasks-@user.Id">
+                                        <i class="bi bi-tools"></i> @userTasks.Count Cihaz Atanmış
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group shadow-sm">
+                                        <a href="/Staff/Edit/@user.Id" class="btn btn-warning btn-sm">Düzenle</a>
+
+                                        <a href="/Staff/Delete/@user.Id" class="btn btn-danger btn-sm" onclick="return confirm('Bu personeli silmek istediğinize emin misiniz? (Üzerindeki cihazlar boşa çıkacaktır!)');">Sil</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Açılır Kapanır Detay Satırı (Cihaz Listesi) -->
+                            <tr class="collapse" id="tasks-@user.Id" data-bs-parent="#personnelTable">
+                                <td colspan="6" class="bg-light p-3 border-bottom">
+                                    @if (userTasks.Count > 0)
+                                    {
+                                        <ul class="list-group list-group-flush rounded shadow-sm">
+                                            @foreach (var task in userTasks)
+                                            {
+                                                <li class="list-group-item bg-white d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong>@task.CustomerName</strong> - @task.DeviceModel
+                                                        <br> <small class="text-muted">Arıza: @task.IssueDescription</small>
+                                                    </div>
+                                                    <span class="badge bg-primary rounded-pill">@task.CreatedDate.ToString("dd.MM.yyyy")</span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-secondary m-0 text-center">Bu personelin üzerinde henüz bir iş bulunmuyor.</div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

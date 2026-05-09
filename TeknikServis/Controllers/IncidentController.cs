@@ -43,7 +43,6 @@ namespace TechService.Controllers
                 values = values.Where(x =>
                     (x.CustomerName != null && x.CustomerName.ToLower().Contains(searchLower)) ||
                     (x.DeviceModel != null && x.DeviceModel.ToLower().Contains(searchLower)) ||
-                    // YENİ EKLENEN KISIM: Personel adında da ara
                     (x.AssignedUser != null && x.AssignedUser.Username.ToLower().Contains(searchLower))
                 ).ToList();
             }
@@ -78,9 +77,24 @@ namespace TechService.Controllers
         }
 
         [HttpGet]
+        public IActionResult Complete(int id)
+        {
+            var incident = _context.DeviceIncidents.Find(id);
+
+            if (incident != null)
+            {
+                incident.Status = "Tamamlandı";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var value = _incidentService.GetIncidentById(id);
+            if (value == null) return NotFound();
 
             // Atama listesini dropdown için tekrar dolduruyoruz
             ViewBag.Employees = _context.Users.Where(x => x.Role == "Employee").ToList();

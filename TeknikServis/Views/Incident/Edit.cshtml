@@ -40,16 +40,24 @@
 
         @if (User.IsInRole("Admin"))
         {
-            <div class="mb-3">
-                <label class="form-label">Atanan Personel</label>
-                <select asp-for="AssignedUserId" class="form-select">
-                    <option value="">-- Personel Seçiniz --</option>
-                    @foreach (var emp in ViewBag.Employees)
+            <div class="mb-4">
+                <label class="form-label fw-bold text-dark">Atanacak Personel</label>
+                <select asp-for="AssignedUserId" class="form-select form-select-lg shadow-sm">
+                    <option value="">-- Personel Seçin (Atanmadı) --</option>
+
+                    @if (ViewBag.Users != null)
                     {
-                        <option value="@emp.Id">@emp.Username</option>
+                        foreach (var user in ViewBag.Users)
+                        {
+                            <option value="@user.Id">@user.Username (@user.Role)</option>
+                        }
                     }
                 </select>
             </div>
+        }
+        else
+        {
+            <input type="hidden" asp-for="AssignedUserId" />
         }
 
         <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>

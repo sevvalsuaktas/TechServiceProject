@@ -49,6 +49,10 @@
                     <a href="/Staff/Create" class="btn btn-primary shadow-sm">
                         <i class="bi bi-person-plus-fill"></i> + Personel Ekle
                     </a>
+
+                    <a href="/Staff/Index" class="btn btn-info text-white shadow-sm">
+                        <i class="bi bi-people-fill"></i> Personelleri Görüntüle
+                    </a>
                 </div>
             }
             <!-- Tablo -->
@@ -62,6 +66,7 @@
                             <th>Arıza Durumu</th>
                             <th>Atanan Personel</th>
                             <th>Cihaz Fotoğrafı</th>
+                            <th>Durum</th>
                             <th class="text-center">İşlemler</th>
                         </tr>
                     </thead>
@@ -96,12 +101,28 @@
                                         <span class="text-muted fst-italic">Fotoğraf Yok</span>
                                     }
                                 </td>
+                                <td>
+                                    @if (item.Status == "Tamamlandı")
+                                    {
+                                        <span class="badge bg-success shadow-sm"><i class="bi bi-check-circle"></i> Tamamlandı</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark shadow-sm"><i class="bi bi-hourglass-split"></i> Bekliyor</span>
+                                    }
+                                </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
-                                        <a href="/Incident/Edit/@item.Id" class="btn btn-warning btn-sm">Güncelle</a>
+                                        <a href="/Incident/Edit/@item.Id" class="btn btn-warning btn-sm">Düzenle</a>
                                         @if (User.IsInRole("Admin"))
                                         {
                                             <a href="/Incident/Delete/@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');">Sil</a>
+                                        }
+                                        @if (item.Status != "Tamamlandı")
+                                        {
+                                            <a href="/Incident/Complete/@item.Id" class="btn btn-success btn-sm fw-bold" onclick="return confirm('Bu cihazın tamirini tamamladığınızı onaylıyor musunuz?');">
+                                                <i class="bi bi-check-circle"></i> Tamamla
+                                            </a>
                                         }
                                     </div>
                                 </td>

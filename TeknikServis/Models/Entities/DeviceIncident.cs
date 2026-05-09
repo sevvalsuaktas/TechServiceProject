@@ -12,5 +12,6 @@
         //Arızanın atandığı personeli tutacağımız Foreign Key (İlişki)
         public int? AssignedUserId { get; set; }
         public AppUser? AssignedUser { get; set; }
+        public string Status { get; set; } = "Bekliyor";
     }
 }
