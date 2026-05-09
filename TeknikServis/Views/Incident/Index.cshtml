@@ -17,7 +17,23 @@
             <!-- Arama Formu -->
             <form method="get" asp-action="Index" class="mb-4">
                 <div class="input-group input-group-lg shadow-sm rounded">
-                    <input type="text" name="searchString" class="form-control border-0 bg-light" placeholder="Müşteri Adı, Cihaz Modeli veya Personel Ara..." />
+
+                    <input type="text" id="searchInput" name="searchString" list="searchSuggestions" class="form-control border-0 bg-light" placeholder="Müşteri Adı, Cihaz Modeli veya Personel Ara..." autocomplete="off" />
+
+                    <!-- Datalist: Arama kutusuna tıklandığında veya yazı yazıldığında çıkacak öneriler -->
+                    <datalist id="searchSuggestions">
+                        <!-- Tablodaki müşteri isimlerini benzersiz (Distinct) olarak listeye ekliyoruz -->
+                        @foreach (var item in Model.Select(m => m.CustomerName).Where(x => !string.IsNullOrEmpty(x)).Distinct())
+                        {
+                            <option value="@item"></option>
+                        }
+                        <!-- Tablodaki cihaz modellerini de listeye ekliyoruz -->
+                        @foreach (var item in Model.Select(m => m.DeviceModel).Where(x => !string.IsNullOrEmpty(x)).Distinct())
+                        {
+                            <option value="@item"></option>
+                        }
+                    </datalist>
+
                     <button type="submit" class="btn btn-primary px-4">Ara</button>
                     <a href="/Incident/Index" class="btn btn-outline-secondary px-4">Temizle</a>
                 </div>
@@ -25,11 +41,16 @@
 
             @if (User.IsInRole("Admin"))
             {
-                <a href="/Incident/Create" class="btn btn-success mb-3 shadow-sm">
-                    <i class="bi bi-plus-lg"></i> + Yeni Kayıt Ekle
-                </a>
-            }
+                <div class="d-flex gap-2 mb-3">
+                    <a href="/Incident/Create" class="btn btn-success shadow-sm">
+                        <i class="bi bi-plus-lg"></i> + Yeni Kayıt Ekle
+                    </a>
 
+                    <a href="/Staff/Create" class="btn btn-primary shadow-sm">
+                        <i class="bi bi-person-plus-fill"></i> + Personel Ekle
+                    </a>
+                </div>
+            }
             <!-- Tablo -->
             <div class="table-responsive">
                 <table class="table table-hover align-middle border-top">
@@ -93,3 +114,24 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Arama kutusuna klavyeden her harf girildiğinde bu fonksiyon çalışır
+            $("#searchInput").on("keyup", function () {
+
+                var arananKelime = $(this).val().trim().toLocaleLowerCase('tr-TR');
+
+                // Tablonun gövdesindeki (tbody) satırları (tr) tek tek kontrol et
+                $("table tbody tr").filter(function () {
+                    // Satırdaki yazıyı da TÜRKÇE kurallarına göre küçült ve kelimeyi ara
+                    var satirYazisi = $(this).text().toLocaleLowerCase('tr-TR');
+
+                    $(this).toggle(satirYazisi.indexOf(arananKelime) > -1)
+                });
+
+            });
+        });
+    </script>
+}

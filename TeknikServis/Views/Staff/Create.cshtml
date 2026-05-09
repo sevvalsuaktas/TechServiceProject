@@ -1,0 +1,53 @@
+﻿@model TechService.Models.Entities.AppUser
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-dark text-white rounded-top-4 py-3">
+                    <h4 class="mb-0 text-center"><i class="bi bi-person-plus-fill"></i> Yeni Personel Ekle</h4>
+                </div>
+
+                <div class="card-body p-4 bg-light">
+
+                    <!-- Hata Mesajı Alanı -->
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger rounded-3 shadow-sm text-center">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <form asp-action="Create" asp-controller="Staff" method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-dark">Kullanıcı Adı</label>
+                            <input type="text" asp-for="Username" class="form-control form-control-lg shadow-sm" placeholder="Örn: ahmet_yilmaz" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-dark">Şifre</label>
+                            <input type="password" asp-for="Password" class="form-control form-control-lg shadow-sm" placeholder="Güçlü bir şifre belirleyin" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">Sistemdeki Rolü</label>
+                            <select asp-for="Role" class="form-select form-select-lg shadow-sm" required>
+                                <option value="Employee" selected>Personel</option>
+                                <option value="Admin">Yönetici</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-2">
+                            <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">Sisteme Kaydet</button>
+                            <a href="/Incident/Index" class="btn btn-outline-secondary">İptal ve Geri Dön</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
