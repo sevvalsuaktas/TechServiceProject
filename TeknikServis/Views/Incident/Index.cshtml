@@ -12,12 +12,16 @@
 
     <form method="get" asp-action="Index" class="mb-4">
         <div class="input-group">
-            <input type="text" name="searchString" class="form-control" placeholder="Müşteri Adı veya Cihaz Modeli Ara..." />
+            <input type="text" name="searchString" class="form-control" placeholder="Müşteri Adı, Cihaz Modeli veya Personel Ara..." />
             <button type="submit" class="btn btn-outline-secondary">Ara</button>
+            <a href="/Incident/Index" class="btn btn-outline-danger">Temizle</a>
         </div>
     </form>
 
-    <a href="/Incident/Create" class="btn btn-primary mb-3">Yeni Kayıt Ekle</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Incident/Create" class="btn btn-primary mb-3">Yeni Kayıt Ekle</a>
+    }
 
     <table class="table table-bordered table-striped align-middle">
         <thead class="table-dark">
@@ -26,6 +30,7 @@
                 <th>Müşteri</th>
                 <th>Cihaz</th>
                 <th>Arıza Durumu</th>
+                <th>Atanan Personel</th>
                 <th>Cihaz Fotoğrafı</th>
                 <th>İşlemler</th>
             </tr>
@@ -38,6 +43,16 @@
                     <td>@item.CustomerName</td>
                     <td>@item.DeviceModel</td>
                     <td>@item.IssueDescription</td>
+                    <td>
+                        @if (item.AssignedUser != null)
+                        {
+                            <span class="badge bg-success fs-6 px-3 py-2">@item.AssignedUser.Username</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary fs-6 px-3 py-2">Atanmadı</span>
+                        }
+                    </td>
                     <td>
                         @if (item.DeviceImage != null)
                         {

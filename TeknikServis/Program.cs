@@ -20,7 +20,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Login/Index"; // Giriþ yapmayanlarý buraya yönlendir
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // 30 dakika iþlem yapýlmazsa at
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // 10 dakika iþlem yapýlmazsa at
+        options.SlidingExpiration = true;
     });
 
 var app = builder.Build();

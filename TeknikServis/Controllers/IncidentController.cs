@@ -38,9 +38,14 @@ namespace TechService.Controllers
             // Arama filtrelemesi (Hem admin hem çalışan arama yapabilsin)
             if (!string.IsNullOrEmpty(searchString))
             {
+                var searchLower = searchString.ToLower(); // Aramayı küçük harfe çevir
+
                 values = values.Where(x =>
-                    x.CustomerName.ToLower().Contains(searchString.ToLower()) ||
-                    x.DeviceModel.ToLower().Contains(searchString.ToLower())).ToList();
+                    (x.CustomerName != null && x.CustomerName.ToLower().Contains(searchLower)) ||
+                    (x.DeviceModel != null && x.DeviceModel.ToLower().Contains(searchLower)) ||
+                    // YENİ EKLENEN KISIM: Personel adında da ara
+                    (x.AssignedUser != null && x.AssignedUser.Username.ToLower().Contains(searchLower))
+                ).ToList();
             }
 
             return View(values); ;

@@ -24,6 +24,7 @@
             <label class="form-label">Cihazın Durum Fotoğrafı</label>
             <input type="file" name="imageFile" class="form-control" accept="image/*" />
         </div>
+
         @if (User.IsInRole("Admin"))
         {
             <div class="mb-3">
@@ -40,8 +41,9 @@
                 </select>
             </div>
         }
-        <button type="submit" class="btn btn-success">Kaydet</button>
+
         <button type="submit" class="btn btn-success">Kaydet</button>
         <a href="/Incident/Index" class="btn btn-secondary">İptal</a>
+
     </form>
 </div>

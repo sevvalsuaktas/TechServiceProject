@@ -1,5 +1,6 @@
 ﻿using TechService.DataAccess;
 using TechService.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace TechService.Services
 {
@@ -32,8 +33,11 @@ namespace TechService.Services
 
         public List<DeviceIncident> GetAllIncidents()
         {
-            // Kayıtları en yeniden en eskiye doğru sıralayarak getiriyoruz
-            return _context.DeviceIncidents.OrderByDescending(x => x.CreatedDate).ToList();
+            // Include metodu ile Arıza kayıtlarını çekerken, ona atanmış Personel (User) bilgisini de tabloya dahil (Join) ediyoruz
+            return _context.DeviceIncidents
+                           .Include(x => x.AssignedUser)
+                           .OrderByDescending(x => x.CreatedDate)
+                           .ToList();
         }
 
         public void DeleteIncident(int id)
