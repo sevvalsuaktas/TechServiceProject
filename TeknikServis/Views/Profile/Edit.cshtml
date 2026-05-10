@@ -1,0 +1,50 @@
+﻿@model TechService.Models.Entities.AppUser
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4 py-3">
+                    <h4 class="mb-0 text-center"><i class="bi bi-person-gear"></i> Profilimi Düzenle</h4>
+                </div>
+
+                <div class="card-body p-4 bg-light">
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger rounded-3 text-center shadow-sm">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <div class="alert alert-info text-center small mb-4 shadow-sm">
+                        <i class="bi bi-info-circle-fill"></i> Bilgilerinizi güncelledikten sonra güvenlik amacıyla sistemden çıkışınız yapılacaktır. Yeni bilgilerinizle tekrar giriş yapabilirsiniz.
+                    </div>
+
+                    <form asp-action="Edit" asp-controller="Profile" method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-dark">Yeni Kullanıcı Adı</label>
+                            <input type="text" asp-for="Username" class="form-control form-control-lg shadow-sm" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">Yeni Şifre</label>
+                            <input type="text" asp-for="Password" class="form-control form-control-lg shadow-sm" required />
+                        </div>
+
+                        <div class="d-grid gap-2 mt-2">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                                Güncelle ve Yeniden Giriş Yap
+                            </button>
+                            <a href="/Incident/Index" class="btn btn-outline-secondary">İptal ve Geri Dön</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

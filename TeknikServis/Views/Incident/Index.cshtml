@@ -6,7 +6,14 @@
         <h2 class="fw-bold text-dark m-0">Arıza Kayıtları</h2>
         <div class="d-flex align-items-center">
             <span class="me-3 fw-semibold">Hoş Geldin, @User.Identity.Name!</span>
-            <a href="/Login/Logout" class="btn btn-outline-danger btn-sm">Çıkış Yap</a>
+
+            <div class="btn-group shadow-sm">
+                <a href="/Profile/Edit" class="btn btn-outline-primary btn-sm fw-bold">
+                    <i class="bi bi-person"></i> Profilim
+                </a>
+
+                <a href="/Login/Logout" class="btn btn-outline-danger btn-sm fw-bold">Çıkış Yap</a>
+            </div>
         </div>
     </div>
 
@@ -18,21 +25,7 @@
             <form method="get" asp-action="Index" class="mb-4">
                 <div class="input-group input-group-lg shadow-sm rounded">
 
-                    <input type="text" id="searchInput" name="searchString" list="searchSuggestions" class="form-control border-0 bg-light" placeholder="Müşteri Adı, Cihaz Modeli veya Personel Ara..." autocomplete="off" />
-
-                    <!-- Datalist: Arama kutusuna tıklandığında veya yazı yazıldığında çıkacak öneriler -->
-                    <datalist id="searchSuggestions">
-                        <!-- Tablodaki müşteri isimlerini benzersiz (Distinct) olarak listeye ekliyoruz -->
-                        @foreach (var item in Model.Select(m => m.CustomerName).Where(x => !string.IsNullOrEmpty(x)).Distinct())
-                        {
-                            <option value="@item"></option>
-                        }
-                        <!-- Tablodaki cihaz modellerini de listeye ekliyoruz -->
-                        @foreach (var item in Model.Select(m => m.DeviceModel).Where(x => !string.IsNullOrEmpty(x)).Distinct())
-                        {
-                            <option value="@item"></option>
-                        }
-                    </datalist>
+                    <input type="text" id="searchInput" name="searchString" class="form-control border-0 bg-light" placeholder="Müşteri Adı, Cihaz Modeli veya Personel Ara..." autocomplete="off" />
 
                     <button type="submit" class="btn btn-primary px-4">Ara</button>
                     <a href="/Incident/Index" class="btn btn-outline-secondary px-4">Temizle</a>
