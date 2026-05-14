@@ -45,11 +45,11 @@
                 <select asp-for="AssignedUserId" class="form-select form-select-lg shadow-sm">
                     <option value="">-- Personel Seçin (Atanmadı) --</option>
 
-                    @if (ViewBag.Users != null)
+                    @if (ViewBag.Employees != null)
                     {
-                        foreach (var user in ViewBag.Users)
+                        foreach (var user in ViewBag.Employees)
                         {
-                            <option value="@user.Id">@user.Username (@user.Role)</option>
+                            <option value="@user.Id">@user.Username</option>
                         }
                     }
                 </select>

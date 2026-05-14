@@ -111,7 +111,7 @@
                                         {
                                             <a href="/Incident/Delete/@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');">Sil</a>
                                         }
-                                        @if (item.Status != "Tamamlandı")
+                                        @if (item.Status != "Tamamlandı" && item.AssignedUserId != null)
                                         {
                                             <a href="/Incident/Complete/@item.Id" class="btn btn-success btn-sm fw-bold" onclick="return confirm('Bu cihazın tamirini tamamladığınızı onaylıyor musunuz?');">
                                                 <i class="bi bi-check-circle"></i> Tamamla

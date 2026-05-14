@@ -81,10 +81,14 @@ namespace TechService.Controllers
         {
             var incident = _context.DeviceIncidents.Find(id);
 
-            if (incident != null)
+            if (incident != null && incident.AssignedUser != null)
             {
                 incident.Status = "Tamamlandı";
                 _context.SaveChanges();
+            }
+            else if (incident != null && incident.AssignedUser == null)
+            {
+                TempData["ErrorMessage"] = "Atanmamış bir cihaz tamamlanamaz!";
             }
 
             return RedirectToAction("Index");
@@ -106,6 +110,9 @@ namespace TechService.Controllers
         public IActionResult Edit(DeviceIncident incident, IFormFile? imageFile)
         {
             _incidentService.UpdateIncident(incident, imageFile);
+
+            ViewBag.Employees = _context.Users.Where(x => x.Role == "Employee").ToList();
+
             return RedirectToAction("Index");
         }
     }
