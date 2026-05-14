@@ -48,6 +48,12 @@ namespace TechService.Controllers
                     return View(p);
                 }
 
+                if (string.IsNullOrEmpty(p.Password) || p.Password.Length < 6 || p.Password.Length > 10 || !p.Password.All(char.IsDigit))
+                {
+                    ViewBag.ErrorMessage = "Şifre 6 ile 10 karakter arasında olmalı ve SADECE RAKAMLARDAN oluşmalıdır!";
+                    return View(p);
+                }
+
                 // Bilgileri güncelle
                 user.Username = p.Username;
                 user.Password = p.Password;

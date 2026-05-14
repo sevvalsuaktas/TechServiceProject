@@ -18,7 +18,6 @@
                     <thead class="table-dark">
                         <tr>
                             <th>Kullanıcı Adı</th>
-                            <th>Şifre</th>
                             <th>Rol</th>
                             <th>Üzerindeki Aktif İşler</th>
                             <th class="text-center">İşlemler</th>
@@ -32,7 +31,6 @@
 
                             <tr>
                                 <td class="fw-semibold text-primary">@user.Username</td>
-                                <td><span class="badge bg-light text-dark border">@user.Password</span></td>
                                 <td>
                                     @if (user.Role == "Admin")
                                     {
@@ -60,7 +58,7 @@
 
                             <!-- Açılır Kapanır Detay Satırı (Cihaz Listesi) -->
                             <tr class="collapse" id="tasks-@user.Id" data-bs-parent="#personnelTable">
-                                <td colspan="6" class="bg-light p-3 border-bottom">
+                                <td colspan="5" class="bg-light p-3 border-bottom">
                                     @if (userTasks.Count > 0)
                                     {
                                         <ul class="list-group list-group-flush rounded shadow-sm">

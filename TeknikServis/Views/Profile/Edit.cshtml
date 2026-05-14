@@ -31,7 +31,10 @@
 
                         <div class="mb-4">
                             <label class="form-label fw-bold text-dark">Yeni Şifre</label>
-                            <input type="text" asp-for="Password" class="form-control form-control-lg shadow-sm" required />
+                            <input type="text" asp-for="Password" class="form-control form-control-lg shadow-sm"
+                                   placeholder="6-10 haneli sadece rakam"
+                                   minlength="6" maxlength="10"
+                                   pattern="\d*" title="Şifre sadece rakamlardan oluşmalıdır!" required />
                         </div>
 
                         <div class="d-grid gap-2 mt-2">
