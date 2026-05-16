@@ -60,6 +60,14 @@
             <input type="hidden" asp-for="AssignedUserId" />
         }
 
+        <div class="mb-4">
+            <label class="form-label fw-bold text-dark">Kayıt Durumu (Aşama)</label>
+            <select asp-for="Status" class="form-select form-select-lg shadow-sm">
+                <option value="Bekliyor">Bekliyor</option>
+                <option value="Tamamlandı">Tamamlandı</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
         <a href="/Incident/Index" class="btn btn-secondary">Vazgeç</a>
     </form>

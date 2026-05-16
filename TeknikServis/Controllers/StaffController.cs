@@ -72,6 +72,8 @@ namespace TechService.Controllers
             var user = _context.Users.Find(id);
             if (user == null) return NotFound();
 
+            user.Password = "";
+
             return View(user);
         }
 
@@ -80,6 +82,7 @@ namespace TechService.Controllers
         public IActionResult Edit(AppUser updatedUser)
         {
             var user = _context.Users.Find(updatedUser.Id);
+
             if (user != null)
             {
                 // Seçtiğimiz yeni kullanıcı adı başkası tarafından kullanılıyor mu? (Kendi ID'miz hariç)
@@ -92,13 +95,18 @@ namespace TechService.Controllers
 
                 // Bilgileri Güncelle
                 user.Username = updatedUser.Username;
-                user.Password = updatedUser.Password;
                 user.Role = updatedUser.Role;
 
-                if (string.IsNullOrEmpty(user.Password) || user.Password.Length < 6 || user.Password.Length > 10 || !user.Password.All(char.IsDigit))
+                if (!string.IsNullOrEmpty(updatedUser.Password))
                 {
-                    ViewBag.ErrorMessage = "Şifre 6 ile 10 karakter arasında olmalı ve SADECE RAKAMLARDAN oluşmalıdır!";
-                    return View(updatedUser); 
+                    if (updatedUser.Password.Length < 6 || updatedUser.Password.Length > 10 || !updatedUser.Password.All(char.IsDigit))
+                    {
+                        ViewBag.ErrorMessage = "Şifre 6 ile 10 karakter arasında olmalı ve SADECE RAKAMLARDAN oluşmalıdır!";
+                        return View(updatedUser);
+                    }
+
+                    // Kurallara uyuyorsa yeni şifreyi veritabanındaki kullanıcıya ata
+                    user.Password = updatedUser.Password;
                 }
 
                 _context.SaveChanges();

@@ -37,7 +37,7 @@ namespace TechService.Services
             return _context.DeviceIncidents
                            .Include(x => x.AssignedUser)
                            .OrderByDescending(x => x.CreatedDate)
-                           .ToList();
+                           .AsNoTracking().ToList(); 
         }
 
         public void DeleteIncident(int id)
@@ -67,6 +67,7 @@ namespace TechService.Services
                 existingValue.DeviceModel = incident.DeviceModel;
                 existingValue.IssueDescription = incident.IssueDescription;
                 existingValue.AssignedUserId = incident.AssignedUserId;
+                existingValue.Status = incident.Status;
 
                 // EĞER YENİ BİR RESİM YÜKLENDİYSE GÜNCELLE
                 if (imageFile != null && imageFile.Length > 0)

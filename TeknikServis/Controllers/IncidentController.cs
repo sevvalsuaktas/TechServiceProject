@@ -81,12 +81,12 @@ namespace TechService.Controllers
         {
             var incident = _context.DeviceIncidents.Find(id);
 
-            if (incident != null && incident.AssignedUser != null)
+            if (incident != null && incident.AssignedUserId != null)
             {
                 incident.Status = "Tamamlandı";
                 _context.SaveChanges();
             }
-            else if (incident != null && incident.AssignedUser == null)
+            else if (incident != null && incident.AssignedUserId == null)
             {
                 TempData["ErrorMessage"] = "Atanmamış bir cihaz tamamlanamaz!";
             }
