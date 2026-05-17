@@ -28,7 +28,6 @@ namespace TechService.Controllers
             // Veritabanında kullanıcıyı ara
             var dataValue = _context.Users.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
 
-            // LoginController.cs içindeki başarılı giriş kısmı
             if (dataValue != null)
             {
                 var claims = new List<Claim>
@@ -56,7 +55,6 @@ namespace TechService.Controllers
                 return RedirectToAction("Index", "Incident");
             }
 
-            // Kullanıcı adı veya şifre hatalıysa mesaj gönder
             ViewBag.ErrorMessage = "Geçersiz kullanıcı adı veya şifre!";
             return View();
         }
